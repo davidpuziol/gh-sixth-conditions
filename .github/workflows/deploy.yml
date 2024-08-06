@@ -1,8 +1,22 @@
-name: Deploy
-on: workflow_call
+name: Deploy Reusable
+on: 
+  workflow_call:
+    inputs:
+      artifact-name:
+        description: Nome do artefato que sera deployado
+        required: false
+        # se não for passado nenhum input será usado o nome dist por isso o required ficou em false
+        default: dist
+        type: string
 jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
+      - name: Get build artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: ${{ inputs.artifact-name }}
+      - name: List Files
+        run: ls
       - name: Deploying
         run: echo "Deploying...."
